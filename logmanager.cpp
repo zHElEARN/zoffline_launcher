@@ -15,16 +15,19 @@ void LogManager::setOutputWidget(QTextBrowser *textBrowser)
 
 void LogManager::addLogImpl(const QString &message, const QString &color, const QString &typeString)
 {
+    QString currentTime = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss");
     QString formattedMessage = QString("<font color=\"%1\">[%2] %3:</font> %4")
-        .arg(color)
-        .arg(QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss"))
-        .arg(typeString)
-        .arg(message);
+        .arg(color, currentTime, typeString, message);
 
     if (m_textBrowser)
     {
         m_textBrowser->append(formattedMessage);
     }
+
+    QString consoleMessage = QString("[%1] %2: %3")
+        .arg(currentTime, typeString, message);
+
+    qDebug().noquote() << consoleMessage;
 }
 
 void LogManager::info(const QString &message)
