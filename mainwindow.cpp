@@ -36,7 +36,7 @@ void MainWindow::initialize()
     // 检测是否安装了Zwift
     if (Utils::isZwiftInstalled())
     {
-        LogManager::instance().info("已安装Zwift");
+        LogManager::instance().info("检测到已安装Zwift");
         ui->label_zwiftStatus->setText("已安装");
         ui->label_zwiftStatus->setStyleSheet("QLabel { color: rgb(0, 255, 0); }");
     }
