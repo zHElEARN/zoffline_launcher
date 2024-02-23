@@ -78,3 +78,16 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+
+void MainWindow::on_comboBox_connectMethod_currentIndexChanged(int index)
+{
+    if (index == 2)
+    {
+        ui->comboBox_customServer->setEnabled(true);
+    }
+    else
+    {
+        ui->comboBox_customServer->setEnabled(false);
+    }
+}
+
