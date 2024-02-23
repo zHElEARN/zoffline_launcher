@@ -75,9 +75,9 @@
    <widget class="QTextBrowser" name="textBrowser_log">
     <property name="geometry">
      <rect>
-      <x>140</x>
-      <y>130</y>
-      <width>256</width>
+      <x>130</x>
+      <y>100</y>
+      <width>511</width>
       <height>192</height>
      </rect>
     </property>
