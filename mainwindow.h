@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QFile>
 #include <QDir>
+#include <QProcess>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -35,6 +36,9 @@ private:
     QString zofflineInstalledVersion;
     QString zwiftInstallFolderPath;
     QString zwiftInstalledVersion;
+
+    QProcess zofflineProcess;
+    QProcess zwiftProcess;
 
 };
 #endif // MAINWINDOW_H

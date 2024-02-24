@@ -3,6 +3,8 @@
 #include "ui_mainwindow.h"
 #include "utils.h"
 
+#include <QDesktopServices>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -154,5 +156,20 @@ void MainWindow::on_pushButton_launchZwift_clicked()
 
     QString output = QString::fromLocal8Bit(configureClientProcess.readAllStandardOutput());
     Logger::instance().info("配置客户端输出：" + output);
+
+    QString zofflinePath = QDir::cleanPath(appDir + QDir::separator() + "toolset" + QDir::separator() + latestZofflineFileName);
+    QString zwiftPath = QDir::cleanPath(zwiftInstallFolderPath + QDir::separator() + "ZwiftLauncher.exe");
+
+    // QDesktopServices::openUrl(QUrl("file:///" + zofflinePath, QUrl::TolerantMode));
+    QDesktopServices::openUrl(QUrl("file:///" + zwiftPath, QUrl::TolerantMode));
+
+    connect(&zofflineProcess, &QProcess::readyReadStandardOutput, this, [this]() {
+        Logger::instance().info(zofflineProcess.readAllStandardOutput());
+    });
+    connect(&zofflineProcess, &QProcess::readyReadStandardError, this, [this]() {
+        Logger::instance().info(zofflineProcess.readAllStandardError());
+    });
+    zofflineProcess.start(zofflinePath);
+    // zwiftProcess.start(zwiftPath);
 }
 
