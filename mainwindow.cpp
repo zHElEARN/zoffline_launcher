@@ -22,15 +22,20 @@ void MainWindow::initialize()
     QDir toolsetDir(toolsetDirPath);
     if (!toolsetDir.exists())
     {
-        Logger::instance().info("不存在toolset文件夹，创建中");
-        if (!toolsetDir.mkpath("."))
-        {
-            Logger::instance().error("toolset文件夹无法创建");
-        }
+        Logger::instance().info("不存在toolset文件夹，创建");
+        if (!toolsetDir.mkpath(".")) Logger::instance().error("toolset文件夹无法创建");
     }
-    else
+    else Logger::instance().info("toolset文件夹已存在");
+    QString configureClientPath = QDir::cleanPath(toolsetDirPath + QDir::separator() + "configure_client.bat");
+    QFile configureClientFile(configureClientPath);
+    if (!configureClientFile.exists())
     {
-        Logger::instance().info("toolset文件夹已存在");
+        Logger::instance().info("客户端配置文件不存在，创建");
+
+        configureClientFile.close();
+        QFile configureFile(":/configure_client.bat");
+        configureFile.copy(configureClientPath);
+        configureFile.close();
     }
 
     // 检测是否安装了Zwift
@@ -74,6 +79,7 @@ void MainWindow::initialize()
             this->ui->label_zofflineStatus->setText("下载中");
             Utils::downloadFile(toolsetDirPath, name, url, [this]() {
                 Logger::instance().info("Zoffline下载成功");
+                this->ui->pushButton_launchZwift->setEnabled(true);
                 this->ui->label_zofflineStatus->setText("已下载");
                 this->ui->label_zofflineStatus->setStyleSheet("QLabel { color: rgb(0, 255, 0); }");
             });
@@ -81,6 +87,7 @@ void MainWindow::initialize()
         else
         {
             Logger::instance().info("Zoffline已经是最新版本，无需更新");
+            this->ui->pushButton_launchZwift->setEnabled(true);
             this->ui->label_zofflineStatus->setText("已下载");
             this->ui->label_zofflineStatus->setStyleSheet("QLabel { color: rgb(0, 255, 0); }");
         }
@@ -121,10 +128,31 @@ void MainWindow::on_pushButton_launchZwift_clicked()
         Logger::instance().warn("未安装Zoffline，无法启动");
         return;
     }
-    if (!isZofflineConfigured)
+    ui->pushButton_launchZwift->setEnabled(false);
+
+    int comparison = Utils::compareVersion(zwiftInstalledVersion, zofflineInstalledVersion);
+    if (comparison == 1)
     {
-        Logger::instance().info("未配置Zoffline，开始配置...");
-        ui->pushButton_launchZwift->setEnabled(false);
+        Logger::instance().warn("Zwift版本高于Zoffline版本");
     }
+    else if (comparison == -1)
+    {
+        Logger::instance().info("Zwift版本低于Zoffline版本");
+    }
+    else
+    {
+        Logger::instance().info("Zwift匹配版本Zoffline版本");
+    }
+
+    QString appDir = QApplication::applicationDirPath();
+    QString configureClientPath = QDir::cleanPath(appDir + QDir::separator() + "toolset" + QDir::separator() + "configure_client.bat");
+
+    QProcess configureClientProcess;
+    QString command = QString("\"%1\" \"%2\"").arg(configureClientPath, zwiftInstallFolderPath);
+    configureClientProcess.start(command);
+    configureClientProcess.waitForFinished();
+
+    QString output = QString::fromLocal8Bit(configureClientProcess.readAllStandardOutput());
+    Logger::instance().info("配置客户端输出：" + output);
 }
 

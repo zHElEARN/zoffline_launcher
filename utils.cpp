@@ -154,3 +154,20 @@ void Utils::downloadFile(const QString &path, const QString &name, const QString
     }
     reply->deleteLater();
 }
+
+int Utils::compareVersion(const QString &version1, const QString &version2)
+{
+    QStringList v1 = version1.split(".");
+    QStringList v2 = version2.split(".");
+
+    while (v1.size() < v2.size()) v1.append("0");
+    while (v2.size() < v1.size()) v2.append("0");
+
+    for (int i = 0; i < v1.size(); ++i)
+    {
+        if (v1[i].toInt() > v2[i].toInt()) return 1;
+        if (v1[i].toInt() < v2[i].toInt()) return -1;
+    }
+
+    return 0;
+}

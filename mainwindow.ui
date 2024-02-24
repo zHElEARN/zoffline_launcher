@@ -198,6 +198,9 @@
        </item>
        <item>
         <widget class="QPushButton" name="pushButton_launchZwift">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="sizePolicy">
           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
            <horstretch>0</horstretch>

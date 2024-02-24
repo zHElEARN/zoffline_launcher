@@ -33,3 +33,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 DISTFILES += \
     resources.rc \
     uac.manifest
+
+RESOURCES += \
+    resources.qrc
