@@ -1,5 +1,7 @@
 #include "utils.h"
 
+#include <QDir>
+
 Utils::Utils()
 {
 
@@ -170,4 +172,33 @@ int Utils::compareVersion(const QString &version1, const QString &version2)
     }
 
     return 0;
+}
+
+void Utils::writeHosts()
+{
+    QString requiredString = "127.0.0.1 us-or-rly101.zwift.com secure.zwift.com cdn.zwift.com launcher.zwift.com";
+
+    // Determine the hosts file path based on the OS
+    QString hostsFilePath = QDir::fromNativeSeparators(qgetenv("SystemRoot")) + "/System32/drivers/etc/hosts";
+
+    QFile file(hostsFilePath);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "Could not open hosts file";
+        return;
+    }
+
+    QTextStream in(&file);
+    QString content = in.readAll();
+    file.close();
+
+    if (!content.contains(requiredString)) {
+        if (!file.open(QIODevice::Append | QIODevice::Text)) {
+            qDebug() << "Could not open hosts file";
+            return;
+        }
+
+        QTextStream out(&file);
+        out << "\n" << requiredString;
+        file.close();
+    }
 }

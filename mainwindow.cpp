@@ -157,6 +157,9 @@ void MainWindow::on_pushButton_launchZwift_clicked()
     QString output = QString::fromLocal8Bit(configureClientProcess.readAllStandardOutput());
     Logger::instance().info("配置客户端输出：" + output);
 
+    Logger::instance().info("写入hosts");
+    Utils::writeHosts();
+
     QString zofflinePath = QDir::cleanPath(appDir + QDir::separator() + "toolset" + QDir::separator() + latestZofflineFileName);
     QString zwiftPath = QDir::cleanPath(zwiftInstallFolderPath + QDir::separator() + "ZwiftLauncher.exe");
 
