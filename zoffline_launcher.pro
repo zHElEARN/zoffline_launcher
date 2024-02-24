@@ -42,3 +42,6 @@ DISTFILES += \
 
 RESOURCES += \
     resources/resources.qrc
+
+INCLUDEPATH += \
+    src/

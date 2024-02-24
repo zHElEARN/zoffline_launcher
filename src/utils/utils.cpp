@@ -1,7 +1,5 @@
 #include "utils.h"
 
-#include <QDir>
-
 Utils::Utils()
 {
 

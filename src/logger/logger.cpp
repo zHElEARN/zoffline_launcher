@@ -1,4 +1,4 @@
-#include "Logger.h"
+#include "logger.h"
 
 Logger::Logger() : m_textBrowser(nullptr) {}
 

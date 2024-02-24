@@ -44,6 +44,6 @@ private:
     void addLogImpl(const QString &typeString, const QString &color, const Args&... args);
 };
 
-#include "Logger.tpp"
+#include "logger.tpp"
 
 #endif // LOGGER_H

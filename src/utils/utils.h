@@ -11,6 +11,7 @@
 #include <QDomDocument>
 #include <QEventLoop>
 #include <QRegularExpression>
+#include <QDir>
 
 #include <functional>
 

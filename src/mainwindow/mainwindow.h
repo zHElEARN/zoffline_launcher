@@ -8,7 +8,7 @@
 #include <QDesktopServices>
 #include <QMessageBox>
 
-#include "../hosts/hosts.h"
+#include "hosts/hosts.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
