@@ -1,7 +1,7 @@
-#include "logger.h"
+#include "../logger/logger.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "utils.h"
+#include "../utils/utils.h"
 
 #include <QDesktopServices>
 
