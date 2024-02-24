@@ -147,7 +147,7 @@ void Utils::downloadFile(const QString &path, const QString &name, const QString
     QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
     loop.exec();
 
-    QFile file(path + name);
+    QFile file(path + QDir::separator() + name);
     if (file.open(QIODevice::WriteOnly))
     {
         file.write(reply->readAll());

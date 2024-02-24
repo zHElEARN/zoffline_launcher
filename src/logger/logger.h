@@ -3,9 +3,10 @@
 
 #include <QTextBrowser>
 #include <QDateTime>
+#include <QDebug>
+#include <tuple>
 
-class Logger
-{
+class Logger {
 public:
     enum LogType {
         Info,
@@ -13,21 +14,36 @@ public:
         Error
     };
 
-public:
     static Logger& instance();
     void setOutputWidget(QTextBrowser *textBrowser);
-    void addLogImpl(const QString &message, const QString &color, const QString &typeString);
 
-    void info(const QString &message);
-    void warn(const QString &message);
-    void error(const QString &message);
+    template<typename... Args>
+    void info(const Args&... args);
+
+    template<typename... Args>
+    void warn(const Args&... args);
+
+    template<typename... Args>
+    void error(const Args&... args);
 
 private:
     QTextBrowser *m_textBrowser;
+
     Logger();
     ~Logger() {}
     Logger(const Logger &) = delete;
     Logger &operator=(const Logger &) = delete;
+
+    template<typename... Args, std::size_t... Is>
+    QString concatArgs(const std::tuple<Args...>& tuple, std::index_sequence<Is...>);
+
+    template<typename... Args>
+    QString concatArgs(const std::tuple<Args...>& tuple);
+
+    template<typename... Args>
+    void addLogImpl(const QString &typeString, const QString &color, const Args&... args);
 };
+
+#include "Logger.tpp"
 
 #endif // LOGGER_H

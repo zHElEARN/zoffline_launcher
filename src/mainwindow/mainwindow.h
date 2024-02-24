@@ -39,12 +39,21 @@ private:
     bool isZwiftInstalled = false;
     bool isZofflineInstalled = false;
     bool isZofflineConfigured = false;
-    QString latestZofflineFileName;
-    QString zofflineInstalledVersion;
-    QString zwiftInstallFolderPath;
-    QString zwiftInstalledVersion;
 
+    // 文件名 如zoffline_1.0.126283.exe
+    QString zofflineFileName;
+    // 版本号 如1.0.126283
+    QString zofflineVersion;
+    // 文件完整路径
+    QString zofflinePath;
     QProcess zofflineProcess;
+
+    // 安装路径 如C:\Program Files (x86)\Zwift
+    QString zwiftPath;
+    // Zwift启动器路径 如C:\Program Files (x86)\Zwift\ZwiftLauncher.exe
+    QString zwiftLauncherPath;
+    // 版本号 如1.0.126283
+    QString zwiftVersion;
     QProcess zwiftProcess;
 
 };

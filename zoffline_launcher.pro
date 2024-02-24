@@ -16,6 +16,7 @@ SOURCES += \
 
 HEADERS += \
     src/logger/logger.h \
+    src/logger/logger.tpp \
     src/mainwindow/mainwindow.h \
     src/utils/utils.h
 
