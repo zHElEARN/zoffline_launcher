@@ -23,7 +23,8 @@ public:
 private slots:
     void on_comboBox_connectMethod_currentIndexChanged(int index);
 
-    void on_pushButton_launchZwift_clicked();
+    void on_pushButton_launch_clicked();
+    void on_pushButton_stop_clicked();
 
 private:
     void initialize();

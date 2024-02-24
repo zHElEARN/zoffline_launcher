@@ -14,6 +14,11 @@
 
 #include <functional>
 
+#include <windows.h>
+#include <tlhelp32.h>
+#include <tchar.h>
+#include <psapi.h>
+
 class Utils
 {
 public:
@@ -27,6 +32,8 @@ public:
     static void downloadFile(const QString& path, const QString& name, const QString& url, std::function<void()> callback);
     static int compareVersion(const QString& version1, const QString& version2);
     static void writeHosts();
+    static void terminate(const QString& zofflineName);
+    static bool isZwiftProcessExists();
 };
 
 #endif // UTILS_H

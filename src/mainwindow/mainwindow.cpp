@@ -93,13 +93,13 @@ void MainWindow::on_comboBox_connectMethod_currentIndexChanged(int index)
 }
 
 
-void MainWindow::on_pushButton_launchZwift_clicked()
+void MainWindow::on_pushButton_launch_clicked()
 {
     if (isZwiftInstalled == false) {
         QMessageBox::warning(nullptr, "警告", "未安装Zwift，无法启动");
         return;
     }
-    if (isZofflineInstalled) {
+    if (isZofflineInstalled == false) {
         QMessageBox::warning(nullptr, "警告", "未安装Zoffline，无法启动");
         return;
     }
@@ -123,10 +123,10 @@ void MainWindow::on_pushButton_launchZwift_clicked()
     Utils::writeHosts();
 
     connect(&zofflineProcess, &QProcess::readyReadStandardOutput, this, [this]() {
-        Logger::instance().info(zofflineProcess.readAllStandardOutput());
+        ui->textBrowser_zofflineLog->append(zofflineProcess.readAllStandardOutput());
     });
     connect(&zofflineProcess, &QProcess::readyReadStandardError, this, [this]() {
-        Logger::instance().info(zofflineProcess.readAllStandardError());
+        ui->textBrowser_zofflineLog->append(zofflineProcess.readAllStandardError());
     });
 
     // 启动Zoffline
@@ -134,5 +134,28 @@ void MainWindow::on_pushButton_launchZwift_clicked()
 
     // 启动Zwift
     QDesktopServices::openUrl(QUrl("file:///" + zwiftLauncherPath, QUrl::TolerantMode));
+
+    ui->pushButton_stop->setEnabled(true);
+}
+
+
+void MainWindow::on_pushButton_stop_clicked()
+{
+    if (Utils::isZwiftProcessExists()) {
+        QMessageBox terminateTip;
+        terminateTip.setText("检测到Zwift正在运行，是否停止？（会终止Zwift）");
+        terminateTip.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
+        terminateTip.setDefaultButton(QMessageBox::Cancel);
+        int option = terminateTip.exec();
+        if (option ==  QMessageBox::Cancel) {
+            return;
+        }
+    }
+
+    zofflineProcess.kill();
+    Utils::terminate(zofflineFileName);
+
+    ui->pushButton_stop->setEnabled(false);
+    ui->pushButton_launch->setEnabled(true);
 }
 

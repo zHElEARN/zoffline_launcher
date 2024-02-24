@@ -202,3 +202,71 @@ void Utils::writeHosts()
         file.close();
     }
 }
+
+void Utils::terminate(const QString& zofflineName)
+{
+    DWORD aProcesses[1024], cbNeeded, cProcesses;
+    unsigned int i;
+
+    if (!EnumProcesses(aProcesses, sizeof(aProcesses), &cbNeeded)) {
+        return;
+    }
+
+    cProcesses = cbNeeded / sizeof(DWORD);
+
+    for (i = 0; i < cProcesses; i++) {
+        if (aProcesses[i] != 0) {
+            TCHAR szProcessName[MAX_PATH] = TEXT("<unknown>");
+            HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, aProcesses[i]);
+
+            if (hProcess != NULL) {
+                HMODULE hMod;
+                DWORD cbNeeded;
+                if (EnumProcessModules(hProcess, &hMod, sizeof(hMod), &cbNeeded)) {
+                    GetModuleBaseName(hProcess, hMod, szProcessName, sizeof(szProcessName) / sizeof(TCHAR));
+                    if (_tcsicmp(szProcessName, reinterpret_cast<const wchar_t *>(zofflineName.utf16())) == 0 || _tcsicmp(szProcessName, TEXT("ZwiftLauncher.exe")) == 0 || _tcsicmp(szProcessName, TEXT("ZwiftApp.exe")) == 0) {
+                        HANDLE hKillProcess = OpenProcess(PROCESS_TERMINATE, FALSE, aProcesses[i]);
+                        if (hKillProcess != NULL) {
+                            TerminateProcess(hKillProcess, 1);
+                            CloseHandle(hKillProcess);
+                        }
+                    }
+                }
+                CloseHandle(hProcess);
+            }
+        }
+    }
+}
+
+bool Utils::isZwiftProcessExists()
+{
+    DWORD aProcesses[1024], cbNeeded, cProcesses;
+    unsigned int i;
+
+    if (!EnumProcesses(aProcesses, sizeof(aProcesses), &cbNeeded)) {
+        return false;
+    }
+
+    cProcesses = cbNeeded / sizeof(DWORD);
+
+    for (i = 0; i < cProcesses; i++) {
+        if (aProcesses[i] != 0) {
+            TCHAR szProcessName[MAX_PATH] = TEXT("<unknown>");
+            HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, aProcesses[i]);
+
+            if (hProcess != NULL) {
+                HMODULE hMod;
+                DWORD cbNeeded;
+                if (EnumProcessModules(hProcess, &hMod, sizeof(hMod), &cbNeeded)) {
+                    GetModuleBaseName(hProcess, hMod, szProcessName, sizeof(szProcessName) / sizeof(TCHAR));
+                    if (_tcsicmp(szProcessName, TEXT("ZwiftLauncher.exe")) == 0 || _tcsicmp(szProcessName, TEXT("ZwiftApp.exe")) == 0) {
+                        CloseHandle(hProcess);
+                        return true;
+                    }
+                }
+                CloseHandle(hProcess);
+            }
+        }
+    }
+    return false;
+}
