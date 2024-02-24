@@ -8,6 +8,8 @@
 #include <QDesktopServices>
 #include <QMessageBox>
 
+#include "../hosts/hosts.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -33,6 +35,8 @@ private:
     Ui::MainWindow *ui;
 
 private:
+    QStringList zwiftHostnames = {"us-or-rly101.zwift.com", "secure.zwift.com", "cdn.zwift.com", "launcher.zwift.com"};
+
     QString appPath;
     QString toolsetPath;
     QString configureClientPath;
@@ -55,7 +59,7 @@ private:
     QString zwiftLauncherPath;
     // 版本号 如1.0.126283
     QString zwiftVersion;
-    QProcess zwiftProcess;
 
+    Hosts hosts;
 };
 #endif // MAINWINDOW_H

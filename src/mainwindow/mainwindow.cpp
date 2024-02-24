@@ -99,38 +99,52 @@ void MainWindow::on_pushButton_launch_clicked()
         QMessageBox::warning(nullptr, "警告", "未安装Zwift，无法启动");
         return;
     }
-    if (isZofflineInstalled == false) {
-        QMessageBox::warning(nullptr, "警告", "未安装Zoffline，无法启动");
-        return;
+
+    if (ui->comboBox_connectMethod->currentIndex() == 0) {
+        // 本地服务器
+        if (isZofflineInstalled == false) {
+            QMessageBox::warning(nullptr, "警告", "未安装Zoffline，无法启动");
+            return;
+        }
+
+        ui->pushButton_launch->setEnabled(false);
+        ui->comboBox_connectMethod->setEditable(false);
+
+        // 版本检查，目前仅检查
+        int comparison = Utils::compareVersion(zwiftVersion, zofflineVersion);
+        if (comparison == 1) Logger::instance().warn("Zwift版本高于Zoffline版本");
+        else if (comparison == -1) Logger::instance().info("Zwift版本低于Zoffline版本");
+        else Logger::instance().info("Zwift匹配Zoffline版本");
+
+        // zoffline证书配置
+        QProcess configureClientProcess;
+        QString command = QString("\"%1\" \"%2\"").arg(configureClientPath, zwiftPath);
+        configureClientProcess.start(command);
+        configureClientProcess.waitForFinished();
+
+        QString output = QString::fromLocal8Bit(configureClientProcess.readAllStandardOutput());
+        Logger::instance().info("配置客户端日志：" + output);
+
+        Logger::instance().info("写入hosts");
+        hosts.load();
+        hosts.backup();
+        hosts.addHosts("127.0.0.1", zwiftHostnames);
+        hosts.save();
+
+        connect(&zofflineProcess, &QProcess::readyReadStandardOutput, this, [this]() {
+            ui->textBrowser_zofflineLog->append(zofflineProcess.readAllStandardOutput());
+        });
+        connect(&zofflineProcess, &QProcess::readyReadStandardError, this, [this]() {
+            ui->textBrowser_zofflineLog->append(zofflineProcess.readAllStandardError());
+        });
+
+        // 启动Zoffline
+        zofflineProcess.start(zofflinePath);
+    } else if (ui->comboBox_connectMethod->currentIndex() == 1) {
+        // 官方服务器 可能无需操作
+    } else {
+        // 自定义服务器
     }
-    ui->pushButton_launch->setEnabled(false);
-
-    int comparison = Utils::compareVersion(zwiftVersion, zofflineVersion);
-    if (comparison == 1) Logger::instance().warn("Zwift版本高于Zoffline版本");
-    else if (comparison == -1) Logger::instance().info("Zwift版本低于Zoffline版本");
-    else Logger::instance().info("Zwift匹配Zoffline版本");
-
-    // zoffline证书配置
-    QProcess configureClientProcess;
-    QString command = QString("\"%1\" \"%2\"").arg(configureClientPath, zwiftPath);
-    configureClientProcess.start(command);
-    configureClientProcess.waitForFinished();
-
-    QString output = QString::fromLocal8Bit(configureClientProcess.readAllStandardOutput());
-    Logger::instance().info("配置客户端输出：" + output);
-
-    Logger::instance().info("写入hosts");
-    Utils::writeHosts();
-
-    connect(&zofflineProcess, &QProcess::readyReadStandardOutput, this, [this]() {
-        ui->textBrowser_zofflineLog->append(zofflineProcess.readAllStandardOutput());
-    });
-    connect(&zofflineProcess, &QProcess::readyReadStandardError, this, [this]() {
-        ui->textBrowser_zofflineLog->append(zofflineProcess.readAllStandardError());
-    });
-
-    // 启动Zoffline
-    zofflineProcess.start(zofflinePath);
 
     // 启动Zwift
     QDesktopServices::openUrl(QUrl("file:///" + zwiftLauncherPath, QUrl::TolerantMode));
@@ -150,6 +164,16 @@ void MainWindow::on_pushButton_stop_clicked()
         if (option ==  QMessageBox::Cancel) {
             return;
         }
+    }
+
+    if (ui->comboBox_connectMethod->currentIndex() == 0) {
+        // 本地服务器
+        hosts.restore();
+    } else if (ui->comboBox_connectMethod->currentIndex() == 1) {
+        // 官方服务器
+    } else {
+        // 自定义服务器
+        hosts.restore();
     }
 
     zofflineProcess.kill();

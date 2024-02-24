@@ -31,7 +31,6 @@ public:
     static QString parseZofflineVersion(const QString& zofflineFileName);
     static void downloadFile(const QString& path, const QString& name, const QString& url, std::function<void()> callback);
     static int compareVersion(const QString& version1, const QString& version2);
-    static void writeHosts();
     static void terminate(const QString& zofflineName);
     static bool isZwiftProcessExists();
 };
