@@ -3,45 +3,40 @@
 #include "ui_mainwindow.h"
 #include "../utils/utils.h"
 
-#include <QDesktopServices>
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
+    Logger::instance().setOutputWidget(ui->textBrowser_mainLog);
+
+    appPath = QApplication::applicationDirPath();
+    toolsetPath = QDir::cleanPath(appPath + QDir::separator() + "toolset");
+    configureClientPath = toolsetPath + QDir::separator() + "configure_client.bat";
+
+    isZwiftInstalled = Utils::getZwiftInstallLocation(zwiftInstallFolderPath);
+
     initialize();
 }
 
 void MainWindow::initialize()
 {
-    Logger::instance().setOutputWidget(ui->textBrowser_log);
-
     // 检测工具文件夹是否存在
-    QString appDir = QApplication::applicationDirPath();
-    QString toolsetDirPath = QDir::cleanPath(appDir + QDir::separator() + "toolset");
-    QDir toolsetDir(toolsetDirPath);
-    if (!toolsetDir.exists())
-    {
-        Logger::instance().info("不存在toolset文件夹，创建");
-        if (!toolsetDir.mkpath(".")) Logger::instance().error("toolset文件夹无法创建");
+    QDir toolsetDir(toolsetPath);
+    if (!toolsetDir.exists()) {
+        if (!toolsetDir.mkpath(".")) QMessageBox::critical(nullptr, "错误", "无法创建toolset文件夹");
     }
-    else Logger::instance().info("toolset文件夹已存在");
-    QString configureClientPath = QDir::cleanPath(toolsetDirPath + QDir::separator() + "configure_client.bat");
-    QFile configureClientFile(configureClientPath);
-    if (!configureClientFile.exists())
-    {
-        Logger::instance().info("客户端配置文件不存在，创建");
 
+    // 判断配置客户端脚本文件是否存在
+    if (!QFileInfo(configureClientPath).isFile()) {
+        QFile configureClientFile(":/configure_client.bat");
+        configureClientFile.copy(configureClientPath);
         configureClientFile.close();
-        QFile configureFile(":/configure_client.bat");
-        configureFile.copy(configureClientPath);
-        configureFile.close();
     }
 
     // 检测是否安装了Zwift
-    if (isZwiftInstalled = Utils::getZwiftInstallLocation(zwiftInstallFolderPath); isZwiftInstalled)
+    if (isZwiftInstalled)
     {
         Logger::instance().info("检测到已安装Zwift");
         Logger::instance().info(QString("Zwift安装路径：%1").arg(zwiftInstallFolderPath));
@@ -49,16 +44,7 @@ void MainWindow::initialize()
         ui->label_zwiftStatus->setStyleSheet("QLabel { color: rgb(0, 255, 0); }");
 
         zwiftInstalledVersion = Utils::getInstalledZwiftVersion(zwiftInstallFolderPath);
-        if (zwiftInstalledVersion.isEmpty())
-        {
-            Logger::instance().warn("无法获取Zwift版本");
-            ui->label_zwiftStatus->setText("无版本");
-            ui->label_zwiftStatus->setStyleSheet("QLabel { color: rgb(170, 85, 0); }");
-        }
-        else
-        {
-            Logger::instance().info(QString("Zwift版本：%1").arg(zwiftInstalledVersion));
-        }
+        Logger::instance().info(QString("Zwift版本：%1").arg(zwiftInstalledVersion));
     }
     else
     {

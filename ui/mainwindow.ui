@@ -222,21 +222,41 @@
       </widget>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_log">
-       <property name="spacing">
-        <number>2</number>
+      <widget class="QTabWidget" name="tabWidget">
+       <property name="currentIndex">
+        <number>0</number>
        </property>
-       <item>
-        <widget class="QLabel" name="label_logTip">
-         <property name="text">
-          <string>日志</string>
+       <widget class="QWidget" name="tab_mainLog">
+        <attribute name="title">
+         <string>主程序日志</string>
+        </attribute>
+        <widget class="QTextBrowser" name="textBrowser_mainLog">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>631</width>
+           <height>291</height>
+          </rect>
          </property>
         </widget>
-       </item>
-       <item>
-        <widget class="QTextBrowser" name="textBrowser_log"/>
-       </item>
-      </layout>
+       </widget>
+       <widget class="QWidget" name="tab_zofflineLog">
+        <attribute name="title">
+         <string>Zoffline日志</string>
+        </attribute>
+        <widget class="QTextBrowser" name="textBrowser_zofflineLog">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>631</width>
+           <height>291</height>
+          </rect>
+         </property>
+        </widget>
+       </widget>
+      </widget>
      </item>
     </layout>
    </widget>

@@ -5,6 +5,8 @@
 #include <QFile>
 #include <QDir>
 #include <QProcess>
+#include <QDesktopServices>
+#include <QMessageBox>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -29,7 +31,12 @@ private:
 private:
     Ui::MainWindow *ui;
 
-    bool isZwiftInstalled  = false;
+private:
+    QString appPath;
+    QString toolsetPath;
+    QString configureClientPath;
+
+    bool isZwiftInstalled = false;
     bool isZofflineInstalled = false;
     bool isZofflineConfigured = false;
     QString latestZofflineFileName;
