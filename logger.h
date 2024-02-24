@@ -1,10 +1,10 @@
-#ifndef LOGMANAGER_H
-#define LOGMANAGER_H
+#ifndef LOGGER_H
+#define LOGGER_H
 
 #include <QTextBrowser>
 #include <QDateTime>
 
-class LogManager
+class Logger
 {
 public:
     enum LogType {
@@ -14,7 +14,7 @@ public:
     };
 
 public:
-    static LogManager& instance();
+    static Logger& instance();
     void setOutputWidget(QTextBrowser *textBrowser);
     void addLogImpl(const QString &message, const QString &color, const QString &typeString);
 
@@ -24,10 +24,10 @@ public:
 
 private:
     QTextBrowser *m_textBrowser;
-    LogManager();
-    ~LogManager() {}
-    LogManager(const LogManager &) = delete;
-    LogManager &operator=(const LogManager &) = delete;
+    Logger();
+    ~Logger() {}
+    Logger(const Logger &) = delete;
+    Logger &operator=(const Logger &) = delete;
 };
 
-#endif // LOGMANAGER_H
+#endif // LOGGER_H

@@ -5,7 +5,41 @@ Utils::Utils()
 
 }
 
-bool Utils::isZwiftInstalled()
+QString Utils::getInstalledZwiftVersion(const QString &zwiftInstallFolderPath)
+{
+    QString version = "";
+
+    QFile file(zwiftInstallFolderPath + "/Zwift_ver_cur.xml");
+
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        qDebug() << "Failed to open file for reading: " << file.errorString();
+        return version;
+    }
+
+    QDomDocument document;
+    if (!document.setContent(&file))
+    {
+        qDebug() << "Failed to parse the file into a DOM tree.";
+        file.close();
+        return version;
+    }
+
+    file.close();
+
+    QDomElement root = document.documentElement();
+    if (root.tagName() != "Zwift")
+    {
+        qDebug() << "Root element name error.";
+        return version;
+    }
+
+    version = root.attribute("version", "");
+
+    return version;
+}
+
+bool Utils::getZwiftInstallLocation(QString &installLocation)
 {
     QProcess process;
     process.start("cmd.exe", QStringList() << "/c" << "reg query HKEY_LOCAL_MACHINE\\SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall /s");
@@ -14,15 +48,40 @@ bool Utils::isZwiftInstalled()
     QString output = QString::fromLocal8Bit(process.readAllStandardOutput());
 
     QStringList lines = output.split("\n");
+    QString zwiftKey;
 
-    for (const QString& line : lines)
+    for (int i = 0; i < lines.size(); ++i)
     {
+        QString line = lines[i];
+
         if (line.contains("DisplayName") && line.contains("Zwift"))
         {
+            for (int j = i - 1; j >= 0; --j)
+            {
+                if (lines[j].startsWith("HKEY_LOCAL_MACHINE"))
+                {
+                    zwiftKey = lines[j].trimmed();
+                    break;
+                }
+            }
+        }
+    }
+
+    if (!zwiftKey.isEmpty())
+    {
+        process.start("cmd.exe", QStringList() << "/c" << "reg query " + zwiftKey + " /v InstallLocation");
+        process.waitForFinished();
+
+        output = QString::fromLocal8Bit(process.readAllStandardOutput());
+        int index = output.indexOf("REG_SZ");
+        if (index != -1)
+        {
+            installLocation = output.mid(index + 6).trimmed();
             return true;
         }
     }
 
+    installLocation = QString();
     return false;
 }
 
@@ -62,6 +121,20 @@ void Utils::getLatestZofflineInfo(std::function<void (const QString &, const QSt
         reply->deleteLater();
         manager->deleteLater();
     });
+}
+
+QString Utils::parseZofflineVersion(const QString &zofflineFileName)
+{
+    QRegularExpression re("zoffline_(.*)\\.exe");
+    QRegularExpressionMatch match = re.match(zofflineFileName);
+    if (match.hasMatch())
+    {
+        return match.captured(1);
+    }
+    else
+    {
+        return QString();
+    }
 }
 
 void Utils::downloadFile(const QString &path, const QString &name, const QString &url, std::function<void ()> callback)

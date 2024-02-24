@@ -1,19 +1,19 @@
-#include "logmanager.h"
+#include "logger.h"
 
-LogManager::LogManager() : m_textBrowser(nullptr) {}
+Logger::Logger() : m_textBrowser(nullptr) {}
 
-LogManager& LogManager::instance()
+Logger& Logger::instance()
 {
-    static LogManager instance;
+    static Logger instance;
     return instance;
 }
 
-void LogManager::setOutputWidget(QTextBrowser *textBrowser)
+void Logger::setOutputWidget(QTextBrowser *textBrowser)
 {
     m_textBrowser = textBrowser;
 }
 
-void LogManager::addLogImpl(const QString &message, const QString &color, const QString &typeString)
+void Logger::addLogImpl(const QString &message, const QString &color, const QString &typeString)
 {
     QString currentTime = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss");
     QString formattedMessage = QString("<font color=\"%1\">[%2] %3:</font> %4")
@@ -30,17 +30,17 @@ void LogManager::addLogImpl(const QString &message, const QString &color, const 
     qDebug().noquote() << consoleMessage;
 }
 
-void LogManager::info(const QString &message)
+void Logger::info(const QString &message)
 {
     addLogImpl(message, "black", "INFO");
 }
 
-void LogManager::warn(const QString &message)
+void Logger::warn(const QString &message)
 {
     addLogImpl(message, "orange", "WARN");
 }
 
-void LogManager::error(const QString &message)
+void Logger::error(const QString &message)
 {
     addLogImpl(message, "red", "ERROR");
 }
