@@ -7,6 +7,7 @@
 #include <QProcess>
 #include <QDesktopServices>
 #include <QMessageBox>
+#include <QVariant>
 
 #include "hosts/hosts.h"
 #include "logger/logger.h"
@@ -40,7 +41,7 @@ private:
 
 private:
     Ui::MainWindow *ui;
-    ServerListManager serverListManagerDialog;
+    ServerListManager *serverListManagerDialog;
 
 private:
     QStringList zwiftHostnames = {"us-or-rly101.zwift.com", "secure.zwift.com", "cdn.zwift.com", "launcher.zwift.com"};

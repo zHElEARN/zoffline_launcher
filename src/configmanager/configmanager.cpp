@@ -9,6 +9,11 @@ ConfigManager& ConfigManager::instance()
 void ConfigManager::initialize(const QString &fileName, const QString &directory)
 {
     file.setFileName(directory + QDir::separator() + fileName);
+    load();
+}
+
+void ConfigManager::load()
+{
     if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
         jsonObject = doc.object();

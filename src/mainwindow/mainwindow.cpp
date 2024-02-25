@@ -25,6 +25,8 @@ MainWindow::MainWindow(QWidget *parent)
     ConfigManager::instance().initialize("config.json", configPath);
 
     updateServerList();
+
+    serverListManagerDialog = new ServerListManager(this);
 }
 
 void MainWindow::initialize()
@@ -97,7 +99,9 @@ void MainWindow::updateServerList()
     QJsonObject servers = ConfigManager::instance().getServers();
     for (auto it = servers.begin(); it != servers.end(); ++it) {
         QString serverInfo = it.key() + " [" + it.value().toString() + "]";
-        ui->comboBox_customServer->addItem(serverInfo);
+        QMap<QString, QString> serverData;
+        serverData.insert(it.key(), it.value().toString());
+        ui->comboBox_customServer->addItem(serverInfo, QVariant::fromValue(serverData));
     }
 }
 
@@ -146,7 +150,7 @@ void MainWindow::on_pushButton_launch_clicked()
         QString output = QString::fromLocal8Bit(configureClientProcess.readAllStandardOutput());
         Logger::instance().info("配置客户端日志：" + output);
 
-        Logger::instance().info("写入hosts");
+        Logger::instance().info("写入hosts", "服务器地址: 127.0.0.1 [本地]");
         hosts.load();
         hosts.backup();
         hosts.addHosts("127.0.0.1", zwiftHostnames);
@@ -168,6 +172,20 @@ void MainWindow::on_pushButton_launch_clicked()
         ui->comboBox_connectMethod->setEditable(false);
     } else {
         // 自定义服务器
+
+        ui->pushButton_launch->setEnabled(false);
+        ui->comboBox_connectMethod->setEditable(false);
+
+        QMap<QString, QString> selectedServer = ui->comboBox_customServer->currentData().value<QMap<QString, QString>>();
+
+        QString alias = selectedServer.firstKey();
+        QString address = selectedServer.first();
+
+        Logger::instance().info("写入hosts","服务器地址:", address, QString("[%1]").arg(alias));
+        hosts.load();
+        hosts.backup();
+        hosts.addHosts(address, zwiftHostnames);
+        hosts.save();
     }
 
     // 启动Zwift
@@ -210,7 +228,7 @@ void MainWindow::on_pushButton_stop_clicked()
 
 void MainWindow::on_action_manage_triggered()
 {
-    serverListManagerDialog.exec();
+    serverListManagerDialog->exec();
     updateServerList();
 }
 

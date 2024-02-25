@@ -11,7 +11,7 @@ ServerListManager::ServerListManager(QWidget *parent)
 
 void ServerListManager::loadServers()
 {
-    ConfigManager::instance().getServers();
+    ConfigManager::instance().load();
 
     QJsonObject servers = ConfigManager::instance().getServers();
     ui->tableWidget->setRowCount(servers.size());

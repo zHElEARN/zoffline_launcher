@@ -23,6 +23,7 @@ public:
     void setServerAddress(const QString& alias, const QString& newAddress);
 
     void save();
+    void load();
 
 private:
     ConfigManager() {}
