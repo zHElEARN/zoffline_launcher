@@ -302,19 +302,16 @@
     <property name="title">
      <string>服务器列表</string>
     </property>
-    <addaction name="actionServerAdd"/>
-    <addaction name="actionServerManage"/>
+    <addaction name="action_manage"/>
    </widget>
    <addaction name="menu"/>
   </widget>
-  <action name="actionServerAdd">
-   <property name="text">
-    <string>添加</string>
-   </property>
-  </action>
-  <action name="actionServerManage">
+  <action name="action_manage">
    <property name="text">
     <string>管理</string>
+   </property>
+   <property name="toolTip">
+    <string>管理服务器列表</string>
    </property>
   </action>
  </widget>

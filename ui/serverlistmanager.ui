@@ -63,16 +63,16 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_actions">
         <item>
-         <widget class="QPushButton" name="pushButton_delete">
+         <widget class="QPushButton" name="pushButton_add">
           <property name="text">
-           <string>删除</string>
+           <string>添加</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_add">
+         <widget class="QPushButton" name="pushButton_delete">
           <property name="text">
-           <string>添加</string>
+           <string>删除</string>
           </property>
          </widget>
         </item>
@@ -92,7 +92,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_confirm">
+       <widget class="QPushButton" name="pushButton_done">
         <property name="text">
          <string>确定</string>
         </property>

@@ -9,6 +9,10 @@
 #include <QMessageBox>
 
 #include "hosts/hosts.h"
+#include "logger/logger.h"
+#include "configmanager/configmanager.h"
+
+#include "serverlistmanager/serverlistmanager.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -28,17 +32,26 @@ private slots:
     void on_pushButton_launch_clicked();
     void on_pushButton_stop_clicked();
 
+    void on_action_manage_triggered();
+
 private:
     void initialize();
+    void updateServerList();
 
 private:
     Ui::MainWindow *ui;
+    ServerListManager serverListManagerDialog;
 
 private:
     QStringList zwiftHostnames = {"us-or-rly101.zwift.com", "secure.zwift.com", "cdn.zwift.com", "launcher.zwift.com"};
 
+    // 可执行程序所在的路径
     QString appPath;
+    // toolset文件夹路径 如./toolset
     QString toolsetPath;
+    // 配置文件文件夹路径 如./config
+    QString configPath;
+    // 配置客户端文件路径 如./toolset/configure_client.bat
     QString configureClientPath;
 
     bool isZwiftInstalled = false;

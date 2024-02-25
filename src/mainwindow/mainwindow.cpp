@@ -9,17 +9,22 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    Logger::instance().setOutputWidget(ui->textBrowser_mainLog);
-
     appPath = QApplication::applicationDirPath();
     toolsetPath = QDir::cleanPath(appPath + QDir::separator() + "toolset");
+    configPath = QDir::cleanPath(appPath + QDir::separator() + "config");
     configureClientPath = toolsetPath + QDir::separator() + "configure_client.bat";
 
     isZwiftInstalled = Utils::getZwiftInstallLocation(zwiftPath);
     zwiftPath = QDir::cleanPath(zwiftPath);
     zwiftLauncherPath = zwiftPath + QDir::separator() + "ZwiftLauncher.exe";
 
+    Logger::instance().setOutputWidget(ui->textBrowser_mainLog);
+
     initialize();
+
+    ConfigManager::instance().initialize("config.json", configPath);
+
+    updateServerList();
 }
 
 void MainWindow::initialize()
@@ -28,6 +33,12 @@ void MainWindow::initialize()
     QDir toolsetDir(toolsetPath);
     if (!toolsetDir.exists()) {
         if (!toolsetDir.mkpath(".")) QMessageBox::critical(nullptr, "错误", "无法创建toolset文件夹");
+    }
+
+    // 检测配置文件文件夹是否存在
+    QDir configDir(configPath);
+    if (!configDir.exists()) {
+        if (!configDir.mkpath(".")) QMessageBox::critical(nullptr, "错误", "无法创建config文件夹");
     }
 
     // 判断配置客户端脚本文件是否存在
@@ -78,6 +89,16 @@ void MainWindow::initialize()
         zofflineVersion = Utils::parseZofflineVersion(name);
         Logger::instance().info("Zoffline版本: ", zofflineVersion);
     });
+}
+
+void MainWindow::updateServerList()
+{
+    ui->comboBox_customServer->clear();
+    QJsonObject servers = ConfigManager::instance().getServers();
+    for (auto it = servers.begin(); it != servers.end(); ++it) {
+        QString serverInfo = it.key() + " [" + it.value().toString() + "]";
+        ui->comboBox_customServer->addItem(serverInfo);
+    }
 }
 
 MainWindow::~MainWindow()
@@ -184,5 +205,12 @@ void MainWindow::on_pushButton_stop_clicked()
 
     ui->pushButton_stop->setEnabled(false);
     ui->pushButton_launch->setEnabled(true);
+}
+
+
+void MainWindow::on_action_manage_triggered()
+{
+    serverListManagerDialog.exec();
+    updateServerList();
 }
 

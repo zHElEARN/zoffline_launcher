@@ -9,6 +9,7 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    src/configmanager/configmanager.cpp \
     src/hosts/hosts.cpp \
     src/logger/logger.cpp \
     src/main.cpp \
@@ -17,6 +18,7 @@ SOURCES += \
     src/utils/utils.cpp
 
 HEADERS += \
+    src/configmanager/configmanager.h \
     src/hosts/hosts.h \
     src/logger/logger.h \
     src/logger/logger.tpp \
