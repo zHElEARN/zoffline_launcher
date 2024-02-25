@@ -83,6 +83,7 @@ void MainWindow::initialize()
             Utils::downloadFile(toolsetPath, name, url, [this, activateZofflineStatus]() {
                 Logger::instance().info("Zoffline下载成功");
                 activateZofflineStatus();
+                isZofflineInstalled = true;
             });
         } else {
             Logger::instance().info("Zoffline已经是最新版本，无需更新");
