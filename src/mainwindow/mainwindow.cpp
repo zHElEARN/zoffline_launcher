@@ -120,21 +120,24 @@ void MainWindow::on_comboBox_connectMethod_currentIndexChanged(int index)
 
 void MainWindow::on_pushButton_launch_clicked()
 {
-    if (isZwiftInstalled == false) {
+    if (!isZwiftInstalled) {
         QMessageBox::warning(nullptr, "警告", "未安装Zwift，无法启动");
         return;
     }
 
-    if (ui->comboBox_connectMethod->currentIndex() == 0) {
-        // 本地服务器
-        if (isZofflineInstalled == false) {
-            QMessageBox::warning(nullptr, "警告", "未安装Zoffline，无法启动");
-            return;
-        }
+    int connectMethodIndex = ui->comboBox_connectMethod->currentIndex();
+    bool isLocalServer = connectMethodIndex == 0;
+    bool isCustomServer = connectMethodIndex == 2;
 
-        ui->pushButton_launch->setEnabled(false);
-        ui->comboBox_connectMethod->setEditable(false);
+    if (isLocalServer && !isZofflineInstalled) {
+        QMessageBox::warning(nullptr, "警告", "未安装Zoffline，无法启动");
+        return;
+    }
 
+    ui->pushButton_launch->setEnabled(false);
+    ui->comboBox_connectMethod->setEditable(false);
+
+    if (isLocalServer) {
         // 版本检查，目前仅检查
         int comparison = Utils::compareVersion(zwiftVersion, zofflineVersion);
         if (comparison == 1) Logger::instance().warn("Zwift版本高于Zoffline版本");
@@ -165,17 +168,8 @@ void MainWindow::on_pushButton_launch_clicked()
 
         // 启动Zoffline
         zofflineProcess.start(zofflinePath);
-    } else if (ui->comboBox_connectMethod->currentIndex() == 1) {
-        // 官方服务器 可能无需操作
-
-        ui->pushButton_launch->setEnabled(false);
-        ui->comboBox_connectMethod->setEditable(false);
-    } else {
+    } else if (isCustomServer) {
         // 自定义服务器
-
-        ui->pushButton_launch->setEnabled(false);
-        ui->comboBox_connectMethod->setEditable(false);
-
         QMap<QString, QString> selectedServer = ui->comboBox_customServer->currentData().value<QMap<QString, QString>>();
 
         QString alias = selectedServer.firstKey();
