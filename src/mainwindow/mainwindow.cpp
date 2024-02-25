@@ -142,6 +142,9 @@ void MainWindow::on_pushButton_launch_clicked()
         zofflineProcess.start(zofflinePath);
     } else if (ui->comboBox_connectMethod->currentIndex() == 1) {
         // 官方服务器 可能无需操作
+
+        ui->pushButton_launch->setEnabled(false);
+        ui->comboBox_connectMethod->setEditable(false);
     } else {
         // 自定义服务器
     }

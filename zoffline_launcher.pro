@@ -13,6 +13,7 @@ SOURCES += \
     src/logger/logger.cpp \
     src/main.cpp \
     src/mainwindow/mainwindow.cpp \
+    src/serverlistmanager/serverlistmanager.cpp \
     src/utils/utils.cpp
 
 HEADERS += \
@@ -20,12 +21,12 @@ HEADERS += \
     src/logger/logger.h \
     src/logger/logger.tpp \
     src/mainwindow/mainwindow.h \
+    src/serverlistmanager/serverlistmanager.h \
     src/utils/utils.h
 
 FORMS += \
     ui/mainwindow.ui \
-    ui/manage_server.ui \
-    ui/serveradddialog.ui
+    ui/serverlistmanager.ui
 
 RC_FILE += \
     resources/resources.rc
