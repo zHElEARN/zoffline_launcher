@@ -85,7 +85,7 @@ bool Utils::getZwiftInstallLocation(QString &installLocation)
     return false;
 }
 
-void Utils::getLatestZofflineInfo(std::function<void (const QString &, const QString &)> callback)
+void Utils::getLatestZofflineInfo(std::function<void (const QString &, const QString &, qint64)> callback)
 {
     QNetworkAccessManager *manager = new QNetworkAccessManager();
     QUrl url(QString("https://api.github.com/repos/%1/%2/releases/latest").arg("zoffline", "zwift-offline"));
@@ -105,8 +105,9 @@ void Utils::getLatestZofflineInfo(std::function<void (const QString &, const QSt
                 QJsonObject firstAsset = assets.first().toObject();
                 QString name = firstAsset["name"].toString();
                 QString url = firstAsset["browser_download_url"].toString();
+                qint64 size = firstAsset["size"].toInteger();
 
-                callback(name, url);
+                callback(name, url, size);
             }
             else
             {

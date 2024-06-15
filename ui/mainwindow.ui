@@ -7,19 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>644</width>
-    <height>438</height>
+    <height>479</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>644</width>
-    <height>438</height>
+    <height>479</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>644</width>
-    <height>438</height>
+    <height>479</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -31,8 +31,8 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>641</width>
-      <height>411</height>
+      <width>631</width>
+      <height>451</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_main">
@@ -52,90 +52,10 @@
       <number>6</number>
      </property>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_options" stretch="0,0,3,0,1">
+      <layout class="QHBoxLayout" name="horizontalLayout_options" stretch="3,0,1">
        <property name="spacing">
         <number>16</number>
        </property>
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_status">
-         <property name="spacing">
-          <number>3</number>
-         </property>
-         <item>
-          <layout class="QFormLayout" name="formLayout_zofflineStatus">
-           <property name="labelAlignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-           <property name="formAlignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-           <property name="horizontalSpacing">
-            <number>10</number>
-           </property>
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_zofflineStatusTip">
-             <property name="text">
-              <string>Zoffline状态:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QLabel" name="label_zofflineStatus">
-             <property name="styleSheet">
-              <string notr="true">QLabel { color: rgb(170, 85, 0); }</string>
-             </property>
-             <property name="text">
-              <string>加载中</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QFormLayout" name="formLayout_zwiftStatus">
-           <property name="labelAlignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-           <property name="formAlignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-           <property name="horizontalSpacing">
-            <number>10</number>
-           </property>
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_zwiftStatusTips">
-             <property name="text">
-              <string>Zwift状态:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QLabel" name="label_zwiftStatus">
-             <property name="styleSheet">
-              <string notr="true">QLabel { color: rgb(255, 0, 0); }</string>
-             </property>
-             <property name="text">
-              <string>未安装</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <widget class="Line" name="line_2">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-        </widget>
-       </item>
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_config">
          <property name="spacing">
@@ -243,6 +163,181 @@
       </layout>
      </item>
      <item>
+      <widget class="Line" name="line_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="2,0,3">
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_4">
+         <item>
+          <layout class="QFormLayout" name="formLayout_zwiftStatus">
+           <property name="labelAlignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="formAlignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="horizontalSpacing">
+            <number>10</number>
+           </property>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_zwiftStatusTips">
+             <property name="text">
+              <string>Zwift状态:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLabel" name="label_zwiftStatus">
+             <property name="styleSheet">
+              <string notr="true">QLabel { color: rgb(255, 0, 0); }</string>
+             </property>
+             <property name="text">
+              <string>未安装</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QFormLayout" name="formLayout_zwiftVersion">
+           <property name="labelAlignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="formAlignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="horizontalSpacing">
+            <number>10</number>
+           </property>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_zwiftVersionTip">
+             <property name="text">
+              <string>Zwift版本:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLabel" name="label_zwiftVersion">
+             <property name="styleSheet">
+              <string notr="true">QLabel { color: rgb(255, 0, 0); }</string>
+             </property>
+             <property name="text">
+              <string>未安装</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="Line" name="line_4">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="3,1">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_3">
+           <item>
+            <layout class="QFormLayout" name="formLayout_zofflineStatus">
+             <property name="labelAlignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+             <property name="formAlignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+             <property name="horizontalSpacing">
+              <number>10</number>
+             </property>
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_zofflineStatusTip">
+               <property name="text">
+                <string>Zoffline状态:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLabel" name="label_zofflineStatus">
+               <property name="styleSheet">
+                <string notr="true">QLabel { color: rgb(170, 85, 0); }</string>
+               </property>
+               <property name="text">
+                <string>加载中</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QFormLayout" name="formLayout_zofflineVersion">
+             <property name="labelAlignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+             <property name="formAlignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+             <property name="horizontalSpacing">
+              <number>10</number>
+             </property>
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_zofflineVersionTip">
+               <property name="text">
+                <string>Zoffline版本:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLabel" name="label_zofflineVersion">
+               <property name="styleSheet">
+                <string notr="true">QLabel { color: rgb(170, 85, 0); }</string>
+               </property>
+               <property name="text">
+                <string>加载中</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_downloadZoffline">
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>114514</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>下载Zoffline</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+     <item>
       <widget class="Line" name="line">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -252,7 +347,7 @@
      <item>
       <widget class="QTabWidget" name="tabWidget">
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="tab_mainLog">
         <attribute name="title">
@@ -261,11 +356,17 @@
         <widget class="QTextBrowser" name="textBrowser_mainLog">
          <property name="geometry">
           <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>631</width>
-           <height>291</height>
+           <x>7</x>
+           <y>10</y>
+           <width>601</width>
+           <height>244</height>
           </rect>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
         </widget>
        </widget>
@@ -276,10 +377,10 @@
         <widget class="QTextBrowser" name="textBrowser_zofflineLog">
          <property name="geometry">
           <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>631</width>
-           <height>291</height>
+           <x>7</x>
+           <y>10</y>
+           <width>601</width>
+           <height>244</height>
           </rect>
          </property>
         </widget>

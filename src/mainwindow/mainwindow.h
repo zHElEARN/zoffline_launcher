@@ -35,6 +35,8 @@ private slots:
     void on_action_manage_triggered();
     void on_action_mirror_triggered();
 
+    void on_pushButton_downloadZoffline_clicked();
+
 private:
     void initialize();
     void updateServerList();
@@ -62,6 +64,8 @@ private:
 
     // 文件名 如zoffline_1.0.126283.exe
     QString zofflineFileName;
+    // 下载链接 如https://github.com/zoffline/zwift-offline/releases/download/zoffline_1.0.130349/zoffline_1.0.130349.exe
+    QString zofflineURL;
     // 版本号 如1.0.126283
     QString zofflineVersion;
     // 文件完整路径

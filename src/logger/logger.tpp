@@ -31,7 +31,7 @@ void Logger::addLogImpl(const QString &typeString, const QString &color, const A
 
 template<typename... Args>
 void Logger::info(const Args&... args) {
-    addLogImpl("INFO", "black", args...);
+    addLogImpl("INFO", "white", args...);
 }
 
 template<typename... Args>

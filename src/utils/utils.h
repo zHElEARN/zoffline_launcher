@@ -28,7 +28,7 @@ public:
 public:
     static QString getInstalledZwiftVersion(const QString& zwiftInstallFolderPath);
     static bool getZwiftInstallLocation(QString &installLocation);
-    static void getLatestZofflineInfo(std::function<void(const QString&, const QString&)> callback);
+    static void getLatestZofflineInfo(std::function<void(const QString&, const QString&, qint64)> callback);
     static QString parseZofflineVersion(const QString& zofflineFileName);
     static void downloadFile(const QString& path, const QString& name, const QString& url, std::function<void()> callback);
     static int compareVersion(const QString& version1, const QString& version2);

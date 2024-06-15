@@ -59,15 +59,19 @@ void MainWindow::initialize()
 
         zwiftVersion = Utils::getInstalledZwiftVersion(zwiftPath);
         Logger::instance().info("Zwift版本: ", zwiftVersion);
+        ui->label_zwiftVersion->setText(zwiftVersion);
+        ui->label_zwiftVersion->setStyleSheet("QLabel { color: rgb(0, 255, 0); }");
     }
 
     // 获取zoffline信息
     Logger::instance().info("正在获取Zoffline信息");
-    Utils::getLatestZofflineInfo([this](const QString &name, const QString &url) {
+    Utils::getLatestZofflineInfo([this](const QString &name, const QString &url, qint64 size) {
         Logger::instance().info("Zoffline最新: ", name);
         Logger::instance().info("Zoffline链接: ", url);
+        Logger::instance().info("Zoffline大小: ", QString::number(size));
 
         zofflineFileName = name;
+        zofflineURL = url;
         zofflinePath = toolsetPath + QDir::separator() + zofflineFileName;
 
         isZofflineInstalled = QFile::exists(zofflinePath);
@@ -78,20 +82,29 @@ void MainWindow::initialize()
             this->ui->label_zofflineStatus->setStyleSheet("QLabel { color: rgb(0, 255, 0); }");
         };
 
-        if (!isZofflineInstalled) {
-            Logger::instance().info("未下载Zoffline，开始下载");
-            this->ui->label_zofflineStatus->setText("下载中");
-            Utils::downloadFile(toolsetPath, name, url, [this, activateZofflineStatus]() {
-                Logger::instance().info("Zoffline下载成功");
-                activateZofflineStatus();
-                isZofflineInstalled = true;
-            });
-        } else {
+        if (isZofflineInstalled) {
+            QFileInfo fileInfo(zofflinePath);
+            qint64 fileSize = fileInfo.size();
+
+            Logger::instance().info("本地Zoffline大小: ", QString::number(fileSize));
+            if (fileSize != size) {
+                isZofflineInstalled = false;
+                Logger::instance().warn("Zoffline大小不匹配");
+            }
+        }
+
+        if (isZofflineInstalled) {
             Logger::instance().info("Zoffline已经是最新版本，无需更新");
+            ui->pushButton_downloadZoffline->setEnabled(false);
             activateZofflineStatus();
+        } else {
+            this->ui->label_zofflineStatus->setText("未安装");
+            this->ui->label_zofflineStatus->setStyleSheet("QLabel { color: rgb(255, 0, 0); }");
         }
         zofflineVersion = Utils::parseZofflineVersion(name);
         Logger::instance().info("Zoffline版本: ", zofflineVersion);
+        ui->label_zofflineVersion->setText(zofflineVersion);
+        ui->label_zofflineVersion->setStyleSheet("QLabel { color: rgb(0, 255, 0); }");
     });
 }
 
@@ -234,5 +247,32 @@ void MainWindow::on_action_mirror_triggered()
 {
     mirrorManager->loadMirror();
     mirrorManager->exec();
+}
+
+
+void MainWindow::on_pushButton_downloadZoffline_clicked()
+{
+    if (!isZofflineInstalled) {
+        Logger::instance().info("未下载Zoffline，开始下载");
+        this->ui->label_zofflineStatus->setText("下载中");
+        this->ui->label_zofflineStatus->setStyleSheet("QLabel { color: rgb(170, 85, 0); }");
+
+        QString mirror = ConfigManager::instance().getMirror();
+        QString url;
+        if (mirror == "github") {
+            url = zofflineURL;
+        } else if (mirror == "ghproxy") {
+            url = "https://mirror.ghproxy.com/" + zofflineURL;
+        }
+
+        Utils::downloadFile(toolsetPath, zofflineFileName, url, [this]() {
+            Logger::instance().info("Zoffline下载成功");
+            this->ui->pushButton_launch->setEnabled(true);
+            this->ui->label_zofflineStatus->setText("已下载");
+            this->ui->label_zofflineStatus->setStyleSheet("QLabel { color: rgb(0, 255, 0); }");
+            isZofflineInstalled = true;
+            ui->pushButton_downloadZoffline->setEnabled(false);
+        });
+    }
 }
 
