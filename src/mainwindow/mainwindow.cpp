@@ -27,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent)
     updateServerList();
 
     serverListManagerDialog = new ServerListManager(this);
+    mirrorManager = new MirrorManager(this);
 }
 
 void MainWindow::initialize()
@@ -223,7 +224,15 @@ void MainWindow::on_pushButton_stop_clicked()
 
 void MainWindow::on_action_manage_triggered()
 {
+    serverListManagerDialog->loadServers();
     serverListManagerDialog->exec();
     updateServerList();
+}
+
+
+void MainWindow::on_action_mirror_triggered()
+{
+    mirrorManager->loadMirror();
+    mirrorManager->exec();
 }
 

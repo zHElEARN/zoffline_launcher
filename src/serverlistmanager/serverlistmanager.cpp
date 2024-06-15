@@ -5,8 +5,6 @@ ServerListManager::ServerListManager(QWidget *parent)
     , ui(new Ui::ServerListManager)
 {
     ui->setupUi(this);
-
-    loadServers();
 }
 
 void ServerListManager::loadServers()

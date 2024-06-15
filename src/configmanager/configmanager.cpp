@@ -16,40 +16,54 @@ void ConfigManager::load()
 {
     if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
-        jsonObject = doc.object();
+        servers = doc["servers"].toObject();
+        mirror = doc["mirror"].toString();
         file.close();
     }
 }
 
 void ConfigManager::addServer(const QString &alias, const QString &address)
 {
-    jsonObject[alias] = address;
+    servers[alias] = address;
 }
 
 void ConfigManager::removeServer(const QString &alias)
 {
-    jsonObject.remove(alias);
+    servers.remove(alias);
+}
+
+void ConfigManager::setMirror(const QString &mirror)
+{
+    this->mirror = mirror;
 }
 
 QJsonObject ConfigManager::getServers()
 {
-    return jsonObject;
+    return servers;
 }
 
 QString ConfigManager::getServerAddress(const QString &alias)
 {
-    return jsonObject[alias].toString();
+    return servers[alias].toString();
+}
+
+QString ConfigManager::getMirror()
+{
+    return mirror.isEmpty() ? "github" : mirror;
 }
 
 void ConfigManager::setServerAddress(const QString &alias, const QString &newAddress)
 {
-    jsonObject[alias] = newAddress;
+    servers[alias] = newAddress;
 }
 
 void ConfigManager::save()
 {
     if (file.open(QIODevice::WriteOnly | QIODevice::Text))
     {
+        QJsonObject jsonObject;
+        jsonObject.insert("servers", getServers());
+        jsonObject.insert("mirror", getMirror());
         QJsonDocument doc(jsonObject);
         file.write(doc.toJson());
         file.close();

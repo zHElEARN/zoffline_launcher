@@ -149,6 +149,13 @@
            <property name="formAlignment">
             <set>Qt::AlignCenter</set>
            </property>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_connectMethodTip">
+             <property name="text">
+              <string>连接方式：</string>
+             </property>
+            </widget>
+           </item>
            <item row="0" column="1">
             <widget class="QComboBox" name="comboBox_connectMethod">
              <item>
@@ -166,13 +173,6 @@
                <string>自定义服务器</string>
               </property>
              </item>
-            </widget>
-           </item>
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_connectMethodTip">
-             <property name="text">
-              <string>连接方式：</string>
-             </property>
             </widget>
            </item>
           </layout>
@@ -300,18 +300,21 @@
    </property>
    <widget class="QMenu" name="menu">
     <property name="title">
-     <string>服务器列表</string>
+     <string>设置</string>
     </property>
     <addaction name="action_manage"/>
+    <addaction name="action_mirror"/>
    </widget>
    <addaction name="menu"/>
   </widget>
   <action name="action_manage">
    <property name="text">
-    <string>管理</string>
+    <string>服务器列表</string>
    </property>
-   <property name="toolTip">
-    <string>管理服务器列表</string>
+  </action>
+  <action name="action_mirror">
+   <property name="text">
+    <string>下载源</string>
    </property>
   </action>
  </widget>

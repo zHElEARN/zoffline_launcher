@@ -14,8 +14,9 @@ SOURCES += \
     src/logger/logger.cpp \
     src/main.cpp \
     src/mainwindow/mainwindow.cpp \
+    src/mirrormanager/mirrormanager.cpp \
     src/serverlistmanager/serverlistmanager.cpp \
-    src/utils/utils.cpp
+    src/utils/utils.cpp \
 
 HEADERS += \
     src/configmanager/configmanager.h \
@@ -23,11 +24,13 @@ HEADERS += \
     src/logger/logger.h \
     src/logger/logger.tpp \
     src/mainwindow/mainwindow.h \
+    src/mirrormanager/mirrormanager.h \
     src/serverlistmanager/serverlistmanager.h \
-    src/utils/utils.h
+    src/utils/utils.h \
 
 FORMS += \
     ui/mainwindow.ui \
+    ui/mirrormanager.ui \
     ui/serverlistmanager.ui
 
 RC_FILE += \

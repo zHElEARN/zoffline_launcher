@@ -10,10 +10,9 @@
 #include <QVariant>
 
 #include "hosts/hosts.h"
-#include "logger/logger.h"
-#include "configmanager/configmanager.h"
 
 #include "serverlistmanager/serverlistmanager.h"
+#include "mirrormanager/mirrormanager.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -34,6 +33,7 @@ private slots:
     void on_pushButton_stop_clicked();
 
     void on_action_manage_triggered();
+    void on_action_mirror_triggered();
 
 private:
     void initialize();
@@ -42,6 +42,7 @@ private:
 private:
     Ui::MainWindow *ui;
     ServerListManager *serverListManagerDialog;
+    MirrorManager *mirrorManager;
 
 private:
     QStringList zwiftHostnames = {"us-or-rly101.zwift.com", "secure.zwift.com", "cdn.zwift.com", "launcher.zwift.com"};

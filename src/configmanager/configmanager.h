@@ -17,8 +17,11 @@ public:
     void addServer(const QString& alias, const QString& address);
     void removeServer(const QString& alias);
 
+    void setMirror(const QString& mirror);
+
     QJsonObject getServers();
     QString getServerAddress(const QString& alias);
+    QString getMirror();
 
     void setServerAddress(const QString& alias, const QString& newAddress);
 
@@ -31,7 +34,8 @@ private:
     void operator =(ConfigManager const&) = delete;
 
     QFile file;
-    QJsonObject jsonObject;
+    QJsonObject servers;
+    QString mirror;
 };
 
 #endif // CONFIGMANAGER_H

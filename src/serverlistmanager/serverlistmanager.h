@@ -31,7 +31,7 @@ private slots:
 private:
     Ui::ServerListManager *ui;
 
-private:
+public:
     void loadServers();
 };
 
