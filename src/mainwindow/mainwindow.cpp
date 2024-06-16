@@ -120,6 +120,16 @@ void MainWindow::updateServerList()
     }
 }
 
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    if (this->isLaunched) {
+        QMessageBox::warning(this, "警告", "请先停止后再退出程序", QMessageBox::Ok);
+        event->ignore();
+    } else {
+        event->accept();
+    }
+}
+
 MainWindow::~MainWindow()
 {
     delete ui;
@@ -174,11 +184,29 @@ void MainWindow::on_pushButton_launch_clicked()
         hosts.addHosts("127.0.0.1", zwiftHostnames);
         hosts.save();
 
-        connect(&zofflineProcess, &QProcess::readyReadStandardOutput, this, [this]() {
-            ui->textBrowser_zofflineLog->append(zofflineProcess.readAllStandardOutput());
+        auto handleZofflineOutput = [this]() {
+            QByteArray standardOutput = zofflineProcess.readAllStandardOutput();
+            QString standardOutputStr = QString::fromLocal8Bit(standardOutput);
+
+            QByteArray errorOutput = zofflineProcess.readAllStandardError();
+            QString errorOutputStr = QString::fromLocal8Bit(errorOutput);
+
+            // 合并标准输出和错误输出
+            QString outputStr = standardOutputStr + errorOutputStr;
+
+            this->ui->textBrowser_zofflineLog->append(outputStr);
+
+            if (outputStr.contains("is running.")) {
+                Logger::instance().info("Zoffline已启动");
+                QDesktopServices::openUrl(QUrl("file:///" + zwiftLauncherPath, QUrl::TolerantMode));
+            }
+        };
+
+        connect(&zofflineProcess, &QProcess::readyReadStandardOutput, this, [handleZofflineOutput]() {
+            handleZofflineOutput();
         });
-        connect(&zofflineProcess, &QProcess::readyReadStandardError, this, [this]() {
-            ui->textBrowser_zofflineLog->append(zofflineProcess.readAllStandardError());
+        connect(&zofflineProcess, &QProcess::readyReadStandardError, this, [handleZofflineOutput]() {
+            handleZofflineOutput();
         });
 
         // 启动Zoffline
@@ -195,12 +223,13 @@ void MainWindow::on_pushButton_launch_clicked()
         hosts.backup();
         hosts.addHosts(address, zwiftHostnames);
         hosts.save();
+        QDesktopServices::openUrl(QUrl("file:///" + zwiftLauncherPath, QUrl::TolerantMode));
     }
 
-    // 启动Zwift
-    QDesktopServices::openUrl(QUrl("file:///" + zwiftLauncherPath, QUrl::TolerantMode));
-
     ui->pushButton_stop->setEnabled(true);
+    isLaunched = true;
+    ui->label_launcherStatus->setStyleSheet("QLabel { color: rgb(0, 255, 0); }");
+    ui->label_launcherStatus->setText("已启动");
 }
 
 
@@ -232,6 +261,9 @@ void MainWindow::on_pushButton_stop_clicked()
 
     ui->pushButton_stop->setEnabled(false);
     ui->pushButton_launch->setEnabled(true);
+    isLaunched = false;
+    ui->label_launcherStatus->setStyleSheet("QLabel { color: rgb(255, 0, 0); }");
+    ui->label_launcherStatus->setText("未启动");
 }
 
 

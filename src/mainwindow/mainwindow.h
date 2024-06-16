@@ -8,6 +8,7 @@
 #include <QDesktopServices>
 #include <QMessageBox>
 #include <QVariant>
+#include <QCloseEvent>
 
 #include "hosts/hosts.h"
 
@@ -46,6 +47,9 @@ private:
     ServerListManager *serverListManagerDialog;
     MirrorManager *mirrorManager;
 
+protected:
+    void closeEvent(QCloseEvent *event) override;
+
 private:
     QStringList zwiftHostnames = {"us-or-rly101.zwift.com", "secure.zwift.com", "cdn.zwift.com", "launcher.zwift.com"};
 
@@ -61,6 +65,7 @@ private:
     bool isZwiftInstalled = false;
     bool isZofflineInstalled = false;
     bool isZofflineConfigured = false;
+    bool isLaunched = false;
 
     // 文件名 如zoffline_1.0.126283.exe
     QString zofflineFileName;
