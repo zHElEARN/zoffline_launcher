@@ -79,13 +79,13 @@ void Hosts::save() {
 
 void Hosts::backup() {
     QString hostsFilePath = getHostsFilePath();
-    QFile::copy(hostsFilePath, hostsFilePath + ".bak");
+    QFile::copy(hostsFilePath, hostsFilePath + ".zoffline_launcher");
 }
 
 void Hosts::restore() {
     QString hostsFilePath = getHostsFilePath();
     QFile::remove(hostsFilePath);
-    QFile::copy(hostsFilePath + ".bak", hostsFilePath);
+    QFile::copy(hostsFilePath + ".zoffline_launcher", hostsFilePath);
 
     // Reload the hosts data from the restored file
     load();

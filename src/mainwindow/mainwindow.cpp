@@ -152,7 +152,7 @@ void MainWindow::on_pushButton_launch_clicked()
 
     int connectMethodIndex = ui->comboBox_connectMethod->currentIndex();
     bool isLocalServer = connectMethodIndex == 0;
-    bool isCustomServer = connectMethodIndex == 2;
+    bool isCustomServer = connectMethodIndex == 1;
 
     if (isLocalServer && !isZofflineInstalled) {
         QMessageBox::warning(nullptr, "警告", "未安装Zoffline，无法启动");
