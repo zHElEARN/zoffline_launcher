@@ -286,6 +286,7 @@ void MainWindow::on_pushButton_downloadZoffline_clicked()
 {
     if (!isZofflineInstalled) {
         Logger::instance().info("未下载Zoffline，开始下载");
+        this->ui->pushButton_downloadZoffline->setEnabled(false);
         this->ui->label_zofflineStatus->setText("下载中");
         this->ui->label_zofflineStatus->setStyleSheet("QLabel { color: rgb(170, 85, 0); }");
 
