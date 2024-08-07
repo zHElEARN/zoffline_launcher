@@ -47,6 +47,11 @@
         <string>GitHub Proxy (mirror.ghproxy.com)</string>
        </property>
       </item>
+      <item>
+       <property name="text">
+        <string>Zhe_Learn ECS (zoffline-sync.zhelearn.com)</string>
+       </property>
+      </item>
      </widget>
     </item>
     <item>

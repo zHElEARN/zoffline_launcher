@@ -296,6 +296,8 @@ void MainWindow::on_pushButton_downloadZoffline_clicked()
             url = zofflineURL;
         } else if (mirror == "ghproxy") {
             url = "https://mirror.ghproxy.com/" + zofflineURL;
+        } else if (mirror == "zhe_learn ecs") {
+            url = "https://zoffline-sync.zhelearn.com/downloads/" + zofflineFileName;
         }
 
         Utils::downloadFile(toolsetPath, zofflineFileName, url, [this]() {

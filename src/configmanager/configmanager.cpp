@@ -49,7 +49,7 @@ QString ConfigManager::getServerAddress(const QString &alias)
 
 QString ConfigManager::getMirror()
 {
-    return mirror.isEmpty() ? "ghproxy" : mirror;
+    return mirror.isEmpty() ? "zhe_learn ecs" : mirror;
 }
 
 void ConfigManager::setServerAddress(const QString &alias, const QString &newAddress)
